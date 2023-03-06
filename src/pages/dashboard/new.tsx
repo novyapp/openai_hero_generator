@@ -38,16 +38,23 @@ const NewImage: NextPageWithLayout = () => {
 
   const { data: session, status } = useSession();
 
-  const generateImage = api.dalle.generateImage.useMutation();
+  const generateText = api.dalle.generateText.useMutation();
 
   const handleGenerateImage = () => {
-    generateImage.mutate({
+    generateText.mutate({
       prompt,
-      promptStyle,
-      promptColor,
-      numberOfImages,
     });
   };
+
+  console.log(
+    JSON.stringify(
+      {
+        generateText: generateText.data ?? null,
+      },
+      null,
+      4
+    )
+  );
 
   if (status === "loading") {
     return <p>Loading...</p>;
