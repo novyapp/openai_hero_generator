@@ -1,21 +1,29 @@
-import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 
 import { api } from "@/utils/api";
-import { ReactElement, useState } from "react";
-import RadioInput from "@/components/UI/RadioInput";
-import UserInfo from "@/components/UserInfo";
-
-import { possibleColors, possibleStyles } from "@/constants/generatorSettings";
+import { ReactElement } from "react";
 import AppLayout from "@/components/AppLayout/AppLayout";
 import { NextPageWithLayout } from "../_app";
+import { refreshSession } from "@/utils/sessionRefresh";
 
 const AddTokens: NextPageWithLayout = () => {
   const { data: session, status } = useSession();
-
   const addTokens = api.dalle.addTokens.useMutation();
+
+  const handleAddTokens = async () => {
+    try {
+      const tok = await addTokens.mutate(
+        {
+          user: session?.user.id!,
+        },
+        {
+          onSuccess: refreshSession,
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (status === "loading") {
     return <p>Loading...</p>;
@@ -47,12 +55,12 @@ const AddTokens: NextPageWithLayout = () => {
                 purchase.
               </span>
             </div>
-            <Link
-              href="#"
+            <button
+              onClick={handleAddTokens}
               className="mt-8 w-full rounded-xl bg-orange-500 py-4 text-center text-white"
             >
               Add Tokens
-            </Link>
+            </button>
           </div>
         </div>
       </div>

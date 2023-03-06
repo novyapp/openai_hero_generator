@@ -11,6 +11,7 @@ import UserInfo from "@/components/UserInfo";
 import { possibleColors, possibleStyles } from "@/constants/generatorSettings";
 import AppLayout from "@/components/AppLayout/AppLayout";
 import { NextPageWithLayout } from "../_app";
+import { refreshSession } from "@/utils/sessionRefresh";
 
 const NewImage: NextPageWithLayout = () => {
   const [typeApi, setTypeApi] = useState("token");
@@ -41,9 +42,13 @@ const NewImage: NextPageWithLayout = () => {
   const generateText = api.dalle.generateText.useMutation();
 
   const handleGenerateImage = () => {
-    generateText.mutate({
-      prompt,
-    });
+    generateText.mutate(
+      {
+        user: session?.user.id!,
+        prompt,
+      },
+      { onSuccess: refreshSession }
+    );
   };
 
   console.log(
