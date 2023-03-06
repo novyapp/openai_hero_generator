@@ -19,15 +19,17 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      tokensAI: number;
+      tokenAPI: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    tokensAI: number;
+    tokenAPI: string;
+  }
 }
 
 /**
@@ -38,8 +40,11 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
+      console.log(session, user);
       if (session.user) {
         session.user.id = user.id;
+        session.user.tokensAI = user.tokensAI;
+        session.user.tokenAPI = user.tokenAPI;
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
