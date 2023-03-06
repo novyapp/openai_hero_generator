@@ -4,6 +4,7 @@ import React from "react";
 interface RadioInputProps {
   label: string;
   check: string;
+  value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   image?: string;
   color?: string;
@@ -12,12 +13,12 @@ interface RadioInputProps {
 const RadioInput = ({
   label,
   check,
+  value,
   onChange,
   image,
   color = "",
 }: RadioInputProps) => {
-  const labelValue = label.toLowerCase();
-  const selectedStyle = check === labelValue;
+  const selectedStyle = check === value;
 
   return (
     <label className="text-sm">
@@ -42,7 +43,7 @@ const RadioInput = ({
       <input
         className="mr-1"
         type="radio"
-        value={labelValue}
+        value={value}
         checked={selectedStyle}
         onChange={onChange}
       />

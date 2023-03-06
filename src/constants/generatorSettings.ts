@@ -1,18 +1,22 @@
 export const possibleStyles = [
   {
     id: 1,
-    name: "Metal",
+    name: "Vector",
     img: "https://api.lorem.space/image/game?w=100&h=100",
+    prompt: ", Vector Illustation, line stamp, kawaii",
   },
   {
     id: 2,
-    name: "Chrome",
+    name: "Cartoon sticker",
     img: "https://api.lorem.space/image/game?w=100&h=100",
+    prompt: ", cute cartoon anime, anime style, white background color",
   },
   {
     id: 3,
-    name: "Perimitiv",
+    name: "Pixel art",
     img: "https://api.lorem.space/image/game?w=100&h=100",
+    prompt:
+      ", detailed isometric, pixel art, c4d, full focus, isolated background",
   },
 ];
 

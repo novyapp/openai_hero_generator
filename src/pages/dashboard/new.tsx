@@ -40,26 +40,34 @@ const NewImage: NextPageWithLayout = () => {
   const { data: session, status } = useSession();
 
   const generateText = api.dalle.generateText.useMutation();
+  const generateImage = api.dalle.generateImage.useMutation();
 
   const handleGenerateImage = () => {
-    generateText.mutate(
+    // generateText.mutate(
+    //   {
+    //     user: session?.user.id!,
+    //     prompt,
+    //   },
+    //   { onSuccess: refreshSession }
+    // );
+    generateImage.mutate(
       {
         user: session?.user.id!,
         prompt,
+        promptStyle,
+        promptColor,
+        numberOfImages,
       },
-      { onSuccess: refreshSession }
+      {
+        onSuccess: (images) => {
+          console.log(images?.data);
+          setResults(images?.data);
+          console.log(results);
+          refreshSession();
+        },
+      }
     );
   };
-
-  console.log(
-    JSON.stringify(
-      {
-        generateText: generateText.data ?? null,
-      },
-      null,
-      4
-    )
-  );
 
   if (status === "loading") {
     return <p>Loading...</p>;
@@ -148,6 +156,7 @@ const NewImage: NextPageWithLayout = () => {
               <RadioInput
                 key={style.id}
                 label={style.name}
+                value={style.prompt}
                 check={promptStyle}
                 image="https://api.lorem.space/image/game?w=100&h=100"
                 onChange={onStyleChange}
@@ -164,12 +173,20 @@ const NewImage: NextPageWithLayout = () => {
               <RadioInput
                 key={style.id}
                 label={style.name}
+                value={style.name}
                 check={promptColor}
                 onChange={onColorChange}
                 color={style.color}
               />
             ))}
           </div>
+          {results?.map((result) => {
+            return (
+              <div>
+                <img src={result.url} />
+              </div>
+            );
+          })}
         </div>
       </div>
     );

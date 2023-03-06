@@ -15,7 +15,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   return (
     <>
-      <div className="flex h-screen w-72 flex-col bg-zinc-200">
+      <div className="flex min-h-screen w-72 flex-col  bg-zinc-200">
         <Logo />
         <Link
           className="m-2 rounded-lg bg-zinc-100 p-2"
@@ -26,7 +26,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <div className="m-2 flex flex-1 rounded-lg bg-zinc-100 p-2">List</div>
         <UserInfo session={sessionData} />
       </div>
-      <div className="flex w-full flex-col space-y-4 p-6">{children}</div>
+      <div className="flex w-full flex-col space-y-4  p-6">{children}</div>
     </>
   );
 };

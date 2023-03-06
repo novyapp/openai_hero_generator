@@ -1,6 +1,7 @@
 import { Session } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface UserInfoProps {
@@ -11,7 +12,7 @@ const UserInfo = ({ session: sessionData }: UserInfoProps) => {
   return (
     <div className="m-2 flex flex-row items-center space-x-4 rounded-lg bg-zinc-100 p-2">
       {sessionData?.user ? (
-        <>
+        <Link href="/dashboard/user" className="flex space-x-4">
           <div>
             <Image
               className="rounded-full border-4 border-orange-500"
@@ -27,9 +28,11 @@ const UserInfo = ({ session: sessionData }: UserInfoProps) => {
               <span className="font-semibold">Available tokens: </span>
               <span>{sessionData?.user.tokensAI}</span>
             </div>
-            <button onClick={() => signOut()}>Logout</button>
+            <button className="text-xs" onClick={() => signOut()}>
+              Logout
+            </button>
           </div>
-        </>
+        </Link>
       ) : (
         <>
           <div>

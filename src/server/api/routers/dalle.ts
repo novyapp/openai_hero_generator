@@ -27,14 +27,41 @@ export const dalleRouter = createTRPCRouter({
   generateImage: protectedProcedure
     .input(
       z.object({
+        user: z.string(),
         prompt: z.string(),
         promptStyle: z.string(),
         promptColor: z.string(),
         numberOfImages: z.number(),
       })
     )
-    .mutation(({ input }) => {
-      // Here some login stuff would happen
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: input.user,
+        },
+      });
+
+      if (user?.tokensAI! <= 9) return;
+
+      const result = await ctx.prisma.user.update({
+        where: {
+          id: input.user,
+        },
+        data: {
+          tokensAI: { increment: input.numberOfImages * -10 },
+        },
+      });
+
+      console.log(input.numberOfImages);
+
+      const response = await openai.createImage({
+        prompt: `${input.promptStyle} ${input.prompt} ${input.promptStyle}`,
+        n: input.numberOfImages,
+        size: "256x256",
+      });
+
+      console.log(response.data.data);
+      return response.data;
     }),
 
   generateText: protectedProcedure
@@ -86,7 +113,7 @@ export const dalleRouter = createTRPCRouter({
           id: input.user,
         },
         data: {
-          tokensAI: { increment: 10 },
+          tokensAI: { increment: 50 },
         },
       });
 

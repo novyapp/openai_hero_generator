@@ -34,7 +34,7 @@ const AddTokens: NextPageWithLayout = () => {
 
   if (session) {
     return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center space-y-4 p-6">
+      <div className="flex w-full flex-col items-center justify-center space-y-4 p-6">
         {/* Pricing table */}
         <div className="flex">
           {/* Basic */}
